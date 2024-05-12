@@ -14,6 +14,6 @@ public class DirectoryExistsIoCommand : IIoCommand
     public IIoOperation PrepareIoOperation(string toBasePath, IIoOperationFactory ioOperationFactory)
     {
         string targetDirectory = Path.Combine(toBasePath, FileOrFolder.RelativePath);
-        return ioOperationFactory.CreateDirectory(targetDirectory);
+        return ioOperationFactory.CreateDirectory(targetDirectory, FileOrFolder.RelativePath);
     }
 }

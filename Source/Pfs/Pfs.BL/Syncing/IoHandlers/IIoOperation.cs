@@ -3,4 +3,5 @@
 public interface IIoOperation
 {
     IoOperationResult Execute();
+    string RelativePath { get; }
 }

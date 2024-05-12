@@ -14,6 +14,6 @@ public class FileExistsIoCommand : IIoCommand
     public IIoOperation PrepareIoOperation(string toBasePath, IIoOperationFactory ioOperationFactory)
     {
         string targetFilePath = Path.Combine(toBasePath, FileOrFolder.RelativePath);
-        return ioOperationFactory.CopyFile(FileOrFolder.AbsolutePath, targetFilePath);
+        return ioOperationFactory.CopyFile(FileOrFolder.AbsolutePath, targetFilePath, FileOrFolder.RelativePath);
     }
 }

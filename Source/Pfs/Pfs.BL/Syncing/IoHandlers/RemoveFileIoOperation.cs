@@ -3,10 +3,12 @@
 public class RemoveFileIoOperation : IIoOperation
 {
     public string Path { get; }
+    public string RelativePath { get; }
 
-    public RemoveFileIoOperation(string path)
+    public RemoveFileIoOperation(string path, string relativePath)
     {
         Path = path;
+        RelativePath = relativePath;
     }
 
     public IoOperationResult Execute()

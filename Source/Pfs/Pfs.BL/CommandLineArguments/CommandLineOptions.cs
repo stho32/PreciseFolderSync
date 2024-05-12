@@ -12,4 +12,7 @@ public class CommandLineOptions
 
     [Option('w', "whatif", Default = false, HelpText = "Simulate the operation without making any changes.")]
     public bool WhatIf { get; set; }
+
+    [Option('i', "ignore", Separator = ',', Required = false, HelpText = "Ignore certain files or directories.")]
+    public IEnumerable<string>? Ignore { get; set; }
 }

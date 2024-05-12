@@ -14,6 +14,6 @@ public class DirectoryDoesNotExistIoCommand : IIoCommand
     public IIoOperation PrepareIoOperation(string toBasePath, IIoOperationFactory ioOperationFactory)
     {
         string targetDirectory = Path.Combine(toBasePath, FileOrFolder.RelativePath);
-        return ioOperationFactory.DeleteDirectory(targetDirectory);
+        return ioOperationFactory.DeleteDirectory(targetDirectory, FileOrFolder.RelativePath);
     }
 }

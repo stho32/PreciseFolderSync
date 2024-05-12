@@ -3,10 +3,12 @@
 public class DeleteDirectoryIoOperation : IIoOperation
 {
     public string Path { get; }
+    public string RelativePath { get; }
 
-    public DeleteDirectoryIoOperation(string path)
+    public DeleteDirectoryIoOperation(string path, string relativePath)
     {
         Path = path;
+        RelativePath = relativePath;
     }
 
     public IoOperationResult Execute()

@@ -14,6 +14,6 @@ public class FileDoesNotExistIoCommand : IIoCommand
     public IIoOperation PrepareIoOperation(string toBasePath, IIoOperationFactory ioOperationFactory)
     {
         string targetFilePath = Path.Combine(toBasePath, FileOrFolder.RelativePath);
-        return ioOperationFactory.RemoveFile(targetFilePath);
+        return ioOperationFactory.RemoveFile(targetFilePath, FileOrFolder.RelativePath);
     }
 }

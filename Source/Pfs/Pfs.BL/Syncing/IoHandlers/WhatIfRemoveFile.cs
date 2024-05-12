@@ -3,10 +3,12 @@
 public class WhatIfRemoveFile : IIoOperation
 {
     public string Path { get; }
+    public string RelativePath { get; }
 
-    public WhatIfRemoveFile(string path)
+    public WhatIfRemoveFile(string path, string relativePath)
     {
         Path = path;
+        RelativePath = relativePath;
     }
 
     public IoOperationResult Execute()

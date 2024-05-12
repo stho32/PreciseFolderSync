@@ -24,7 +24,7 @@ class Program
     }
 
     private static int Synchronize(IDirectoryWalker fromDirectoryWalker, IDirectoryWalker toDirectoryWalker,
-       CommandLineOptions options)
+   CommandLineOptions options)
     {
         var synchronizer = new Synchronizer(fromDirectoryWalker, toDirectoryWalker);
 
@@ -46,6 +46,14 @@ class Program
 
             foreach (var operation in ioOperations)
             {
+                if (ShouldIgnoreOperation(operation.RelativePath, options.Ignore))
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkGray; // Silver color
+                    Console.WriteLine($"{DateTime.Now} - IGNORED - {operation.RelativePath}");
+                    Console.ResetColor();
+                    continue;
+                }
+
                 operationIndex++;
                 var progressInfo = $"{operationIndex}/{ioOperations.Length}";
 
@@ -85,4 +93,26 @@ class Program
         return 1; // Failure
     }
 
+    private static bool ShouldIgnoreOperation(string relativePath, IEnumerable<string>? ignoreList)
+    {
+        if (ignoreList == null)
+        {
+            return false;
+        }
+
+        foreach (var ignoreItem in ignoreList)
+        {
+            if (ignoreItem.EndsWith("\\") && relativePath.StartsWith(ignoreItem, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            if (!ignoreItem.EndsWith("\\") && relativePath.Equals(ignoreItem, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

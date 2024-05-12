@@ -3,10 +3,12 @@
 public class CreateDirectoryIoOperation : IIoOperation
 {
     public string Path { get; }
+    public string RelativePath { get; }
 
-    public CreateDirectoryIoOperation(string path)
+    public CreateDirectoryIoOperation(string path, string relativePath)
     {
         Path = path;
+        RelativePath = relativePath;
     }
 
     public IoOperationResult Execute()

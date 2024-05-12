@@ -4,11 +4,13 @@ public class CopyFileIoOperation : IIoOperation
 {
     public string FromPath { get; }
     public string ToPath { get; }
+    public string RelativePath { get; }
 
-    public CopyFileIoOperation(string fromPath, string toPath)
+    public CopyFileIoOperation(string fromPath, string toPath, string relativePath)
     {
         FromPath = fromPath;
         ToPath = toPath;
+        RelativePath = relativePath;
     }
 
     public IoOperationResult Execute()
