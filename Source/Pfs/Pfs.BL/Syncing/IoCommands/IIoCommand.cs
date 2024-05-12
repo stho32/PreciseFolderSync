@@ -4,7 +4,7 @@ namespace Pfs.BL.Syncing.IoCommands;
 
 public interface IIoCommand
 {
-    string RelativePath { get; }
+    FileOrFolder FileOrFolder { get; }
 
     IoOperationResult Execute(string toBasePath, IIoHandler ioHandler);
 }

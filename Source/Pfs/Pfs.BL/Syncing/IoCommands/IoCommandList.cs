@@ -11,4 +11,19 @@ public class IoCommandList
         commands.Add(command);
     }
 
+    public void Sort()
+    {
+        commands.Sort((x, y) =>
+        {
+            // Sort by whether the command is associated with a file or a directory
+            int fileTypeComparison = x.FileOrFolder.IsFile.CompareTo(y.FileOrFolder.IsFile);
+            if (fileTypeComparison != 0)
+            {
+                return fileTypeComparison;
+            }
+
+            // If both commands are associated with the same type of file system object, sort by relative path
+            return string.Compare(x.FileOrFolder.RelativePath, y.FileOrFolder.RelativePath, StringComparison.Ordinal);
+        });
+    }
 }

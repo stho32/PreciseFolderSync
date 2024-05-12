@@ -25,11 +25,11 @@ public class Synchronizer
         {
             if (item.IsFile)
             {
-                commands.Add(new FileExistsIoCommand(item.RelativePath, item.AbsolutePath));
+                commands.Add(new FileExistsIoCommand(item));
             }
             else
             {
-                commands.Add(new DirectoryExistsIoCommand(item.RelativePath));
+                commands.Add(new DirectoryExistsIoCommand(item));
             }
         }
 
@@ -39,11 +39,11 @@ public class Synchronizer
             {
                 if (item.IsFile)
                 {
-                    commands.Add(new FileDoesNotExistIoCommand(item.RelativePath));
+                    commands.Add(new FileDoesNotExistIoCommand(item));
                 }
                 else
                 {
-                    commands.Add(new DirectoryDoesNotExistIoCommand(item.RelativePath));
+                    commands.Add(new DirectoryDoesNotExistIoCommand(item));
                 }
             }
         }

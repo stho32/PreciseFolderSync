@@ -4,20 +4,16 @@ namespace Pfs.BL.Syncing.IoCommands;
 
 public class FileExistsIoCommand : IIoCommand
 {
-    private readonly string relativePathInFrom;
-    private readonly string sourceFilePath;
+    public FileOrFolder FileOrFolder { get; }
 
-    public FileExistsIoCommand(string relativePath, string sourcePath)
+    public FileExistsIoCommand(FileOrFolder fileOrFolder)
     {
-        relativePathInFrom = relativePath;
-        sourceFilePath = sourcePath;
+        FileOrFolder = fileOrFolder;
     }
-
-    public string RelativePath => relativePathInFrom;
 
     public IoOperationResult Execute(string toBasePath, IIoHandler ioHandler)
     {
-        string targetFilePath = Path.Combine(toBasePath, relativePathInFrom);
-        return ioHandler.CopyFile(sourceFilePath, targetFilePath);
+        string targetFilePath = Path.Combine(toBasePath, FileOrFolder.RelativePath);
+        return ioHandler.CopyFile(FileOrFolder.AbsolutePath, targetFilePath);
     }
 }
