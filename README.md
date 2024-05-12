@@ -40,10 +40,6 @@
             - If the targetfilePath does exist, it is deleted.
     - All whatif implementations are the same as their execute counterparts, but they do not execute the IO action that would "modify" the file system (create or delete a directory, copy or not copy a file). Instead they print to the screen what they would have done. 
 
-    - The collection can be sorted.
-        - The first sorting level is descending by "isFile" (Files to the bottom).
-        - Folders are sorted desc by folder name length.
-
 - The app creates a file-and-folder-list from everything (recursively) in fromPath. Let's call it "from".
 - The app creates a file-and-folder-list from everything (recursively) in toPath. Let's call it "to".
 - Then a IoCommandList is created from the elements of the two lists as follows (based on the relative paths, ignoring casing):
