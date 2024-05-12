@@ -22,12 +22,10 @@
   - IoHandler : The one that really performs the work.
   - WhatIfIoHandler: The one that does not really modify the file system but just returns what it would do instead.
 
-----
-
 - There is a data structure called an IoCommandList.
-    - The list contains elements of IIoCommand. IIoCommand contains 2 methods:
-        - Execute(string toPath)
-        - WhatIf(string toPath)
+    - The list contains elements of IIoCommand. IIoCommand contains 1 method:
+        - IoOperationResult Execute(string toPath)
+        - IoCommands receive an IIoHandler through their constructor which they will use to perform the IO operations.
     - There are some classes, that implement IIoCommand:
         - DirectoryExistsIoCommand
         - FileExistsIoCommand
@@ -50,7 +48,6 @@
         - Execute(toBasePath):
             - The targetfilePath is formed out of the relativePathInFrom and the toBasePath
             - If the targetfilePath does exist, it is deleted.
-    - All whatif implementations are the same as their execute counterparts, but they do not execute the IO action that would "modify" the file system (create or delete a directory, copy or not copy a file). Instead they print to the screen what they would have done. 
 
 - The app creates a file-and-folder-list from everything (recursively) in fromPath. Let's call it "from".
 - The app creates a file-and-folder-list from everything (recursively) in toPath. Let's call it "to".
