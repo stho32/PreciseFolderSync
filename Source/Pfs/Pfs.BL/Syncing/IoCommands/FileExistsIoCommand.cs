@@ -13,6 +13,8 @@ public class FileExistsIoCommand : IIoCommand
         sourceFilePath = sourcePath;
     }
 
+    public string RelativePath => relativePathInFrom;
+
     public IoOperationResult Execute(string toBasePath, IIoHandler ioHandler)
     {
         string targetFilePath = Path.Combine(toBasePath, relativePathInFrom);

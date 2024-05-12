@@ -11,6 +11,8 @@ public class DirectoryExistsIoCommand : IIoCommand
         relativePathInFrom = relativePath;
     }
 
+    public string RelativePath => relativePathInFrom;
+
     public IoOperationResult Execute(string toBasePath, IIoHandler ioHandler)
     {
         string targetDirectory = Path.Combine(toBasePath, relativePathInFrom);
