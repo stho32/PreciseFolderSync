@@ -6,16 +6,14 @@ public class FileExistsIoCommand : IIoCommand
 {
     private readonly string relativePathInFrom;
     private readonly string sourceFilePath;
-    private readonly IIoHandler ioHandler;
 
-    public FileExistsIoCommand(string relativePath, string sourcePath, IIoHandler handler)
+    public FileExistsIoCommand(string relativePath, string sourcePath)
     {
         relativePathInFrom = relativePath;
         sourceFilePath = sourcePath;
-        ioHandler = handler;
     }
 
-    public IoOperationResult Execute(string toBasePath)
+    public IoOperationResult Execute(string toBasePath, IIoHandler ioHandler)
     {
         string targetFilePath = Path.Combine(toBasePath, relativePathInFrom);
         return ioHandler.CopyFile(sourceFilePath, targetFilePath);

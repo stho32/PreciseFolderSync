@@ -64,6 +64,8 @@
         - If the file exists in "from", then a new FileExistsIoCommand with its relative path is created.
         - If the folder exists in "to", but not in from, then a new FileExistsIoCommand with its relative path is created.
 
+
+
 - There is another class IoCommandListExecutor: 
     - It has a method IoOperationResult[] Execute(IoCommandList commands)
         - The IoCommandList is sorted:

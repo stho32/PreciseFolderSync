@@ -5,15 +5,13 @@ namespace Pfs.BL.Syncing.IoCommands;
 public class DirectoryDoesNotExistIoCommand : IIoCommand
 {
     private readonly string relativePathInFrom;
-    private readonly IIoHandler ioHandler;
 
-    public DirectoryDoesNotExistIoCommand(string relativePath, IIoHandler handler)
+    public DirectoryDoesNotExistIoCommand(string relativePath)
     {
         relativePathInFrom = relativePath;
-        ioHandler = handler;
     }
 
-    public IoOperationResult Execute(string toBasePath)
+    public IoOperationResult Execute(string toBasePath, IIoHandler ioHandler)
     {
         string targetDirectory = Path.Combine(toBasePath, relativePathInFrom);
         return ioHandler.DeleteDirectory(targetDirectory);
