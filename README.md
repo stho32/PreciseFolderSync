@@ -10,7 +10,7 @@
         - The absolute path.
         - The relatve path (measured on its base path, without a leading backslash)  
 
-- There is a data structure called a FileOrFolderCollection. (A collection of "file-or-folder"-elements  
+- There is a data structure called a FileOrFolderCollection. (A collection of "file-or-folder"-elements) 
 
 - There is a data structure called an IoCommandList.
     - The list contains elements of IIoCommand. IIoCommand contains 2 methods:
@@ -38,6 +38,7 @@
         - Execute(toBasePath):
             - The targetfilePath is formed out of the relativePathInFrom and the toBasePath
             - If the targetfilePath does exist, it is deleted.
+    - All whatif implementations are the same as their execute counterparts, but they do not execute the IO action that would "modify" the file system (create or delete a directory, copy or not copy a file). Instead they print to the screen what they would have done. 
 
     - The collection can be sorted.
         - The first sorting level is descending by "isFile" (Files to the bottom).
