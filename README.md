@@ -12,6 +12,18 @@
 
 - There is a data structure called a FileOrFolderCollection. (A collection of "file-or-folder"-elements) 
 
+- There is an Interface IIoHandler with the methods:
+  - CreateDirectory(string path)
+  - DeleteDirectory(string path)
+  - CopyFile(string fromFilePath, string toFilePath)
+  - RemoveFile(string filePath)
+  - All methods return a Result that contains a message of what it has done. (string)
+- There are two implementations of this:
+  - IoHandler : The one that really performs the work.
+  - WhatIfIoHandler: The one that does not really modify the file system but just returns what it would do instead.
+
+----
+
 - There is a data structure called an IoCommandList.
     - The list contains elements of IIoCommand. IIoCommand contains 2 methods:
         - Execute(string toPath)
