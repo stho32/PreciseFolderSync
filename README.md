@@ -49,23 +49,28 @@
             - The targetfilePath is formed out of the relativePathInFrom and the toBasePath
             - If the targetfilePath does exist, it is deleted.
 
-- The app creates a file-and-folder-list from everything (recursively) in fromPath. Let's call it "from".
-- The app creates a file-and-folder-list from everything (recursively) in toPath. Let's call it "to".
-- Then a IoCommandList is created from the elements of the two lists as follows (based on the relative paths, ignoring casing):
-    - If the folder exists in "from", then a new DirectoryExistsIoCommand with its relative path is created.
-    - If the folder exists in "to", but not in from, then a new DirectoryDoesNotExistIoCommand with its relative path is created.
-    - If the file exists in "from", then a new FileExistsIoCommand with its relative path is created.
-    - If the folder exists in "to", but not in from, then a new FileExistsIoCommand with its relative path is created.
+- There is an interface IDirectoryWalker
+    - It has a method that returns a list of all directories and files from a base path: FileOrFolderCollection GetFilesAndFolders(string basePath)
+    - There are two implementations:
+        - DirectoryWalker : The one using real access to the file system
+        - InMemoryDirectoryWalker : This one gets the FileOrFolderCollection that it will return as a constructor parameter and is necessary for testing.
 
-- The IoCommandList is then sorted:
-    - DirectoryExistsIoCommand: Subdirectories are placed after their parent directories.
-    - DirectoryDoesNotExistIoCommand: They are placed behind all their subdirectory commands and file commands of files that are inside of them
+- There is a class called Synchronizer. It has a method: IoCommandList PrepareSync(string fromPath, string toPath);
+    - The method creates a file-and-folder-list from everything (recursively) in fromPath. Let's call it "from".
+    - The method creates a file-and-folder-list from everything (recursively) in toPath. Let's call it "to".
+    - Then a IoCommandList is created from the elements of the two lists as follows (based on the relative paths, ignoring casing):
+        - If the folder exists in "from", then a new DirectoryExistsIoCommand with its relative path is created.
+        - If the folder exists in "to", but not in from, then a new DirectoryDoesNotExistIoCommand with its relative path is created.
+        - If the file exists in "from", then a new FileExistsIoCommand with its relative path is created.
+        - If the folder exists in "to", but not in from, then a new FileExistsIoCommand with its relative path is created.
 
-- Then the IoCommandList is executed as follows
-    - if [--whatif] is not given at the command line:
-        - For each IIoCommand in the list "Execute" is executed.
-    - if [--whatif] is was given at the command line:
-        - For each IIoCommand in the list "WhatIf" is executed.
+- There is another class IoCommandListExecutor: 
+    - It has a method IoOperationResult[] Execute(IoCommandList commands)
+        - The IoCommandList is sorted:
+            - DirectoryExistsIoCommand: Subdirectories are placed after their parent directories.
+            - DirectoryDoesNotExistIoCommand: They are placed behind all their subdirectory commands and file commands of files that are inside of them
+        - All commands are executed and their results are gathered and returned.
+
 
 ## Next features
 - ignoreFiles = ..., ignorePath = ...
