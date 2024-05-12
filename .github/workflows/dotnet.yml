@@ -21,14 +21,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest, ubuntu-latest]
+        os: [windows-latest]  # Only Windows build
         include:
           - os: windows-latest
             RUNTIMEID: win-x64
             OUTPUTDIR: pfs-win-x64
-          - os: ubuntu-latest
-            RUNTIMEID: linux-x64
-            OUTPUTDIR: pfs-linux-x64
 
     steps:
       - uses: actions/checkout@v2
