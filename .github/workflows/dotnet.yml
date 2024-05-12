@@ -47,6 +47,11 @@ jobs:
         run: dotnet publish ${{ env.PROJECT }} -c Release -o ${{ matrix.OUTPUTDIR }} -r ${{ matrix.RUNTIMEID }} --self-contained true
         working-directory: Source/${{ env.SOLUTION_DIR }}
 
+      - name: Remove PDB files
+        run: |
+          Get-ChildItem -Path ${{ matrix.OUTPUTDIR }} -Filter *.pdb -Recurse | Remove-Item -Force
+        shell: pwsh
+
       - uses: vimtor/action-zip@v1
         with:
           files: ./Source/${{ env.SOLUTION_DIR }}/${{ matrix.OUTPUTDIR }}/
