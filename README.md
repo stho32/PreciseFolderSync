@@ -67,12 +67,12 @@
 - The Synchronizer does not have an IoHandler.
 
 - There is another class IoCommandListExecutor: 
-    - It has a method IoOperationResult[] Execute(IoCommandList commands)
+    - It has a method IoOperationResult[] Execute(IoCommandList commands, IIoHandler ioHandler)
         - The IoCommandList is sorted:
             - DirectoryExistsIoCommand: Subdirectories are placed after their parent directories.
             - DirectoryDoesNotExistIoCommand: They are placed behind all their subdirectory commands and file commands of files that are inside of them
         - All commands are executed and their results are gathered and returned.
-
+    
 
 ## Next features
 - ignoreFiles = ..., ignorePath = ...
