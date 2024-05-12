@@ -9,7 +9,7 @@ on:
 env:
   DOTNET_VERSION: "8.0.x" # The .NET SDK version to use
   SOLUTION_DIR: "Pfs"
-  PROJECT: ".\\Pfs\\Pfs.csproj"
+  PROJECT: "./Pfs/Pfs.csproj"
   RELEASEPREFIX: "Pfs"
 
 jobs:
