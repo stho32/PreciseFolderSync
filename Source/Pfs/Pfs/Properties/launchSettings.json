@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Pfs": {
+      "commandName": "Project",
+      "commandLineArgs": "-f C:\\Projekte\\Test1 -t C:\\Projekte\\Test2 -w"
+    }
+  }
+}

@@ -6,5 +6,5 @@ public interface IIoCommand
 {
     FileOrFolder FileOrFolder { get; }
 
-    IoOperationResult Execute(string toBasePath, IIoHandler ioHandler);
+    IIoOperation PrepareIoOperation(string toBasePath, IIoOperationFactory ioOperationFactory);
 }

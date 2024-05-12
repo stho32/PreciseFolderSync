@@ -84,5 +84,3 @@ public class SynchronizerTests
         Assert.That(commands.Commands[0].FileOrFolder, Is.EqualTo(folder2), "The FileOrFolder object should be the same as the one added to the toCollection");
     }
 }
-
-
