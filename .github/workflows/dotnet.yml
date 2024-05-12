@@ -2,6 +2,7 @@ name: build
 
 on:
   push:
+    branches: [main]
   pull_request:
     branches: [main]
 
@@ -13,18 +14,22 @@ env:
 
 jobs:
   build:
-    name: build-${{matrix.os}}
+    name: build-${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest]
+        os: [windows-latest, ubuntu-latest]
         include:
           - os: windows-latest
             RUNTIMEID: win-x64
             OUTPUTDIR: pfs-win-x64
+          - os: ubuntu-latest
+            RUNTIMEID: linux-x64
+            OUTPUTDIR: pfs-linux-x64
 
     steps:
       - uses: actions/checkout@v2
+
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
@@ -39,20 +44,21 @@ jobs:
         working-directory: Source/${{ env.SOLUTION_DIR }}
 
       - name: Publish
-        run: dotnet publish ${{ env.PROJECT }} -c Release -o ${{matrix.OUTPUTDIR}} -r ${{matrix.RUNTIMEID}}
+        run: dotnet publish ${{ env.PROJECT }} -c Release -o ${{ matrix.OUTPUTDIR }} -r ${{ matrix.RUNTIMEID }} --self-contained true
         working-directory: Source/${{ env.SOLUTION_DIR }}
 
       - uses: vimtor/action-zip@v1
         with:
-          files: ./Source/${{ env.SOLUTION_DIR }}/${{matrix.OUTPUTDIR}}/
-          dest: ${{ env.SOLUTION_DIR }}/${{matrix.OUTPUTDIR}}.zip
+          files: ./Source/${{ env.SOLUTION_DIR }}/${{ matrix.OUTPUTDIR }}/
+          dest: ${{ env.SOLUTION_DIR }}/${{ matrix.OUTPUTDIR }}.zip
 
       - name: Create Github Release
+        if: github.event_name == 'push'
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
+          automatic_release_tag: "v1.${{ github.run_number }}"
           prerelease: false
-          title: Project v1.${{github.run_number}}
+          title: Project v1.${{ github.run_number }}
           files: |
-            ${{ env.SOLUTION_DIR }}/${{matrix.OUTPUTDIR}}.zip
+            ${{ env.SOLUTION_DIR }}/${{ matrix.OUTPUTDIR }}.zip
