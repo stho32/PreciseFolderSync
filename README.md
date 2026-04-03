@@ -31,3 +31,25 @@ PS C:\Projekte\Pfs.exe -f C:\Projekte\Test1 -t C:\Projekte\Test2 -i bob.txt,Mahr
 ```
 
 This command will synchronize the directories `Test1` and `Test2`, ignoring the file `bob.txt` and the directory `MahrBaseAPI\Schnapper` and all files inside `MahrBaseAPI\Schnapper\`. The `-w` option indicates that this is a simulation and no changes will be actually made.
+
+## Prerequisites
+
+- [.NET 10.0 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
+
+## Build
+
+```bash
+dotnet build Source/Pfs/Pfs.sln
+```
+
+## Test
+
+```bash
+dotnet test Source/Pfs/Pfs.sln
+```
+
+## Development
+
+```bash
+dotnet run --project Source/Pfs/Pfs/Pfs.csproj -- -f <source_path> -t <destination_path> -w
+```

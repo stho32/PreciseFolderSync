@@ -1,4 +1,3 @@
 # Requirements
 
-put the requirements here
-
+Requirements are managed in the [Anforderungen/](../Anforderungen/) directory.

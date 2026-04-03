@@ -33,9 +33,13 @@ public class Synchronizer
             }
         }
 
+        var fromPaths = new HashSet<string>(
+            from.Items.Select(i => i.RelativePath),
+            StringComparer.OrdinalIgnoreCase);
+
         foreach (var item in to.Items)
         {
-            if (!from.Items.Any(i => i.RelativePath.Equals(item.RelativePath, StringComparison.OrdinalIgnoreCase)))
+            if (!fromPaths.Contains(item.RelativePath))
             {
                 if (item.IsFile)
                 {

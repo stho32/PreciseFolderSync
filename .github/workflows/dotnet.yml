@@ -1,39 +1,32 @@
 name: build
 
-permissions:
-  contents: write
-
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
 
 env:
-  DOTNET_VERSION: "8.0.x" # The .NET SDK version to use
+  DOTNET_VERSION: "10.0.x"
   SOLUTION_DIR: "Pfs"
-  PROJECT: "./Pfs/Pfs.csproj"
-  RELEASEPREFIX: "Pfs"
 
 jobs:
   build:
-    name: build-${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [windows-latest]  # Only Windows build
-        include:
-          - os: windows-latest
-            RUNTIMEID: win-x64
-            OUTPUTDIR: pfs-win-x64
-
+    name: Build & Test
+    runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      - name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
 
       - name: Install dependencies
         run: dotnet restore
@@ -43,27 +36,6 @@ jobs:
         run: dotnet build --configuration Release --no-restore
         working-directory: Source/${{ env.SOLUTION_DIR }}
 
-      - name: Publish
-        run: dotnet publish ${{ env.PROJECT }} -c Release -o ${{ matrix.OUTPUTDIR }} -r ${{ matrix.RUNTIMEID }} --self-contained true
+      - name: Test
+        run: dotnet test --configuration Release --no-restore
         working-directory: Source/${{ env.SOLUTION_DIR }}
-
-      - name: Remove PDB files
-        run: |
-          Get-ChildItem -Path ${{ matrix.OUTPUTDIR }} -Filter *.pdb -Recurse | Remove-Item -Force
-        shell: pwsh
-
-      - uses: vimtor/action-zip@v1
-        with:
-          files: ./Source/${{ env.SOLUTION_DIR }}/${{ matrix.OUTPUTDIR }}/
-          dest: ${{ env.SOLUTION_DIR }}/${{ matrix.OUTPUTDIR }}.zip
-
-      - name: Create Github Release
-        if: github.event_name == 'push'
-        uses: "marvinpinto/action-automatic-releases@latest"
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "v1.${{ github.run_number }}"
-          prerelease: false
-          title: Project v1.${{ github.run_number }}
-          files: |
-            ${{ env.SOLUTION_DIR }}/${{ matrix.OUTPUTDIR }}.zip

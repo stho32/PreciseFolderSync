@@ -5,22 +5,38 @@ using Pfs.BL.Syncing;
 
 class Program
 {
-    static void Main(string[] args)
+    static int Main(string[] args)
     {
         var parseResult = CommandLineArgumentsParser.ParseCommandLineArguments(args);
 
         if (!parseResult.IsSuccess)
         {
             Console.WriteLine(parseResult.Output);
-            Environment.Exit(parseResult.ExitCode);
+            return parseResult.ExitCode;
         }
 
-        var options = parseResult.Options;
+        var options = parseResult.Options!;
+
+        if (!Directory.Exists(options.FromPath))
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"Source directory does not exist: {options.FromPath}");
+            Console.ResetColor();
+            return 1;
+        }
+
+        if (!Directory.Exists(options.ToPath))
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"Destination directory does not exist: {options.ToPath}");
+            Console.ResetColor();
+            return 1;
+        }
 
         IDirectoryWalker fromDirectoryWalker = new DirectoryWalker();
         IDirectoryWalker toDirectoryWalker = new DirectoryWalker();
 
-        Synchronize(fromDirectoryWalker, toDirectoryWalker, options);
+        return Synchronize(fromDirectoryWalker, toDirectoryWalker, options);
     }
 
     private static int Synchronize(IDirectoryWalker fromDirectoryWalker, IDirectoryWalker toDirectoryWalker,
@@ -28,12 +44,12 @@ class Program
     {
         var synchronizer = new Synchronizer(fromDirectoryWalker, toDirectoryWalker);
 
-        var commands = synchronizer.PrepareSync(options.FromPath, options.ToPath);
+        var commands = synchronizer.PrepareSync(options.FromPath!, options.ToPath!);
 
         IIoOperationFactory ioOperationFactory = options.WhatIf ? new WhatIfIoOperationFactory() : new IoOperationFactory();
 
         var executor = new IoCommandListExecutor();
-        var ioOperations = executor.Prepare(commands, options.ToPath, ioOperationFactory);
+        var ioOperations = executor.Prepare(commands, options.ToPath!, ioOperationFactory);
 
         var failedOperations = new List<IIoOperation>();
         var maxRetries = 5;

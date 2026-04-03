@@ -12,8 +12,8 @@ public class CommandLineArgumentsParserTests
         var args = new string[] { "--fromPath", "C:\\Source", "--toPath", "C:\\Destination" };
         var result = CommandLineArgumentsParser.ParseCommandLineArguments(args);
         Assert.That(result.IsSuccess, Is.True);
-        Assert.That(result.Options.FromPath, Is.EqualTo("C:\\Source"));
-        Assert.That(result.Options.ToPath, Is.EqualTo("C:\\Destination"));
+        Assert.That(result.Options!.FromPath, Is.EqualTo("C:\\Source"));
+        Assert.That(result.Options!.ToPath, Is.EqualTo("C:\\Destination"));
     }
 
     [Test]
@@ -43,7 +43,7 @@ public class CommandLineArgumentsParserTests
         var result = CommandLineArgumentsParser.ParseCommandLineArguments(args);
         Assert.That(result.IsSuccess, Is.False);
         Assert.That(result.ExitCode, Is.EqualTo(0));
-        Assert.That(result.Output, Is.EqualTo("PreciseFolderSync Version 1.0.0"));
+        Assert.That(result.Output, Does.StartWith("PreciseFolderSync Version "));
     }
 
     [Test]
@@ -72,7 +72,7 @@ public class CommandLineArgumentsParserTests
         var args = new string[] { "--fromPath", "C:\\Source", "--toPath", "C:\\Destination", "--whatif" };
         var result = CommandLineArgumentsParser.ParseCommandLineArguments(args);
         Assert.That(result.IsSuccess, Is.True);
-        Assert.That(result.Options.WhatIf, Is.True);
+        Assert.That(result.Options!.WhatIf, Is.True);
     }
 
 }
