@@ -1,4 +1,4 @@
-﻿using Pfs.BL.Syncing.IoCommands;
+﻿namespace Pfs.BL.Syncing.IoCommands;
 
 public static class IoCommandSorter
 {
